@@ -8,5 +8,5 @@
 #include <stdio.h>
 
 void main() {
-	puts("Olafdghzfdghzfgh");
+	puts("Ola");
 }
