@@ -20,6 +20,5 @@ git pull // faz o download das atualizacoes que estao no github
 * Gostaria que me explicasse essa parte : "	struct timeval t1; gettimeofday(&t1, NULL); srand(t1.tv_usec * t1.tv_sec);" implementados no
 operação.c para escolher randômicamente operadores.c em randNumero erandOperador.
 * Qual é o mínimo e máximo dos operandos dos desafios? 0 a 100? Devemos gerar qualquer número inteiro não negativo para as operações.
-* Na sua operação calcula apenas no caso de exponeciação você tratou no caso da resposta ser negativa; adicionei tbm na parte de subtração. Ma
-
-
+* Na sua operação calcula apenas no caso de exponeciação você tratou no caso da resposta ser negativa; adicionei tbm na parte de subtração.
+* Deletei aquele hello.c
