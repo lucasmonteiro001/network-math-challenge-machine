@@ -8,6 +8,10 @@ short int calcula(Equacao eq) {
 		val = eq.x + eq.y;
 	else if (eq.op == OPERACOES.SUBTRACAO)
 		val = eq.x - eq.y;
+		// faz o tratamento de buffer overflow
+		if (val < 0)
+		return 0;
+
 	else if (eq.op == OPERACOES.EXPONENCIACAO)
 		val = pow(eq.x, eq.y);
 		// faz o tratamento de buffer overflow
