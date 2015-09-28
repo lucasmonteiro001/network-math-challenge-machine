@@ -1,8 +1,8 @@
 #include "operacao.h"
 
-short int calcula(Equacao eq) {
+operando calcula(Equacao eq) {
 
-	short int val = 0;
+	operando val = 0;
 
 	if (eq.op == OPERACOES.ADICAO)
 		val = eq.x + eq.y;
@@ -10,16 +10,16 @@ short int calcula(Equacao eq) {
 		val = eq.x - eq.y;
 	else if (eq.op == OPERACOES.EXPONENCIACAO)
 		val = pow(eq.x, eq.y);
-		// faz o tratamento de buffer overflow
-		if (val < 0)
-			return 0;
+	// faz o tratamento de buffer overflow
+	if (val < 0)
+		return 0;
 	else if (eq.op == OPERACOES.MULTIPLICACAO)
 		val = eq.x * eq.y;
 
-		return val;
+	return val;
 }
 
-short int randNumero(short int min, short int max) {
+operando randNumero(operando min, operando max) {
 	struct timeval t1;
 	gettimeofday(&t1, NULL);
 	srand(t1.tv_usec * t1.tv_sec);
@@ -54,7 +54,7 @@ operador randOperador() {
 	return -1;
 }
 
-void printOp(operador op) {
+void imprimeOperador(operador op) {
 	switch (op) {
 	case SUB:
 		printf("-");
@@ -79,13 +79,20 @@ Equacao geraEquacaoAleatoria() {
 	const int MIN_VAL = 0;
 	const int MAX_VAL = 100;
 
-	short int x = randNumero(MIN_VAL, MAX_VAL);
-	short int y = randNumero(MIN_VAL, MAX_VAL);
-	short int op = randOperador();
+	operando x = randNumero(MIN_VAL, MAX_VAL);
+	operando y = randNumero(MIN_VAL, MAX_VAL);
+	operador op = randOperador();
 
 	Equacao eq = { x, y, op };
 
 	return eq;
+
+}
+
+void imprimeEquacao(Equacao eq) {
+	printf("%d ", eq.x);
+	imprimeOperador(eq.op);
+	printf(" %d\n ", eq.y);
 
 }
 

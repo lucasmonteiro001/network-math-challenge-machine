@@ -1,14 +1,24 @@
 #include "mensagem.h"
 
+void inicializaDesafioAtravesDeMsg(Desafio *d, operando resultado,
+		mensagem_de_desafio mes) {
+
+	d->resultado = resultado;
+	memcpy(d->msg, mes, 1);
+	memcpy(d->msg + 1, mes + 1, 2);
+	memcpy(d->msg + 3, mes + 3, 2);
+	memcpy(d->msg + 5, mes + 5, 1);
+}
+
 Desafio geraDesafio() {
 
-	char cod = 0x1;
+	codigo cod = COD_DESAFIO;
 
 	Equacao eq = geraEquacaoAleatoria();
-	int resultado = calcula(eq);
 
-	// TODO PERGUNTAR O QUE EH O CAMPO CODIGO
-	void *mes = malloc(TAMANHO_MSG_DESAFIO);
+	operando resultado = calcula(eq);
+
+	mensagem_de_desafio mes;
 
 	// seta todos os campos para zero
 	memset(mes, '\0', sizeof(mes));
@@ -19,31 +29,32 @@ Desafio geraDesafio() {
 	memcpy(mes + 3, &eq.y, sizeof(eq.y));
 	memcpy(mes + 5, &eq.op, sizeof(eq.op));
 
-	Desafio m = { resultado, mes };
+	Desafio d;
+	inicializaDesafioAtravesDeMsg(&d, resultado, mes);
 
-	return m;
+	return d;
 
 }
 
 Resposta geraResposta(short int resultado) {
-	Resposta r = {resultado};
+	Resposta r = { resultado };
 	return r;
 }
 
 MsgResposta geraMsgDeResposta(Resposta r) {
 
-	char cod = COD_RESPOSTA;
+	printf("Gerando msg de resposta\n");
 
-	void *mes = malloc(TAMANHO_MSG_RESPOSTA);
+	MsgResposta m;
+
+	codigo cod = COD_RESPOSTA;
 
 	// seta todos os campos para zero
-	memset(mes, '\0', sizeof(mes));
+	memset(m.msg, '\0', TAMANHO_MSG_RESPOSTA);
 
 	// copia para a mensagem os valores gerados pela equacao
-	memcpy(mes, &cod, sizeof(cod));
-	memcpy(mes + 1, &r.resposta, sizeof(r.resposta));
-
-	MsgResposta m = { mes };
+	memcpy(m.msg, &cod, sizeof(cod));
+	memcpy(m.msg + 1, &r.resposta, sizeof(r.resposta));
 
 	return m;
 
@@ -54,14 +65,14 @@ void imprimeDesafio(Desafio d) {
 	Equacao eq = carregaEquacaoDeDesafio(d);
 
 	printf("Por favor responda quanto eh %d ", eq.x);
-	printOp(eq.op);
+	imprimeOperador(eq.op);
 	printf(" %d:\n", eq.y);
 
 }
 
 void imprimeResposta(Resposta r) {
 
-	short int resp;
+	operando resp;
 
 	memcpy(&resp, &r.resposta, TAMANHO_NUMERO);
 
@@ -78,16 +89,16 @@ bool confereResposta(Desafio d, Resposta r) {
 
 Equacao carregaEquacaoDeDesafio(Desafio d) {
 
-	short int x;
+	operando x;
 	memcpy(&x, d.msg + 1, TAMANHO_NUMERO);
 
-	short int y;
+	operando y;
 	memcpy(&y, d.msg + 3, TAMANHO_NUMERO);
 
 	operador op;
 	memcpy(&op, d.msg + 5, TAMANHO_OPERADOR);
 
-	Equacao eq = {x, y, op};
+	Equacao eq = { x, y, op };
 
 	return eq;
 
@@ -95,9 +106,9 @@ Equacao carregaEquacaoDeDesafio(Desafio d) {
 
 Resposta carregaRespostaDeMsg(MsgResposta m) {
 
-	short int resp;
+	operando resp;
 
-	memcpy(&resp, &m.msg + 1, TAMANHO_NUMERO);
+	memcpy(&resp, m.msg + 1, TAMANHO_NUMERO);
 
 	Resposta r = geraResposta(resp);
 

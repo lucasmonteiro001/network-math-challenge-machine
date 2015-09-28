@@ -13,6 +13,8 @@
 
 typedef char operador;
 
+typedef short int operando;
+
 typedef struct Operacoes {
 	operador SUBTRACAO;
 	operador ADICAO;
@@ -20,22 +22,24 @@ typedef struct Operacoes {
 	operador EXPONENCIACAO;
 } Operacoes;
 
-static Operacoes OPERACOES = {SUB, ADD, MUL, EXP};
+static Operacoes OPERACOES = { SUB, ADD, MUL, EXP };
 
 typedef struct Equacao {
-	short int x;
-	short int y;
+	operando x;
+	operando y;
 	operador op;
 } Equacao;
 
-short int calcula(Equacao eq);
-
-short int randNumero(short int min, short int max);
+operando randNumero(operando min, operando max);
 
 operador randOperador();
 
-void printOp(operador op);
-
 Equacao geraEquacaoAleatoria();
+
+operando calcula(Equacao eq);
+
+void imprimeEquacao(Equacao eq);
+
+void imprimeOperador(operador op);
 
 #endif /* OPERACAO_H_ */
