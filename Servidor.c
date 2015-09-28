@@ -1,11 +1,5 @@
 #include "Servidor.h"
 
-void error(const char *msg)
-{
-    perror(msg);
-    exit(1);
-}
-
 int Servidor(int portno)
 {
      int sockfd, newsockfd;
@@ -14,12 +8,12 @@ int Servidor(int portno)
      struct sockaddr_in serv_addr, cli_addr;
      int n;
      if (portno < 2) {
-         fprintf(stderr,"ERRO, nenhuma porta provida.\n");
+         printf(stderr,"ERRO, nenhuma porta provida.\n");
          exit(1);
      }
      sockfd = socket(AF_INET, SOCK_STREAM, 0);
      if (sockfd < 0){
-        error("ERRO em abrir o socket");
+        printf("ERRO em abrir o socket");
      	exit(1);
      }
      bzero((char *) &serv_addr, sizeof(serv_addr));
@@ -27,7 +21,7 @@ int Servidor(int portno)
      serv_addr.sin_addr.s_addr = INADDR_ANY;
      serv_addr.sin_port = htons(portno);
      if (bind(sockfd, (struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0){
-    	 printf("ERROR on binding");
+    	 printf("ERRO on binding");
      }
      listen(sockfd,5);
      clilen = sizeof(cli_addr);
