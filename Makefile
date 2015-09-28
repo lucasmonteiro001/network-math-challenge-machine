@@ -4,7 +4,7 @@
 ######################################################################
 
 # Lista dos objetos (arquivos .c, troca-se a extensao para .o) necessarios para o programa final
-OBJS = main.o operacao.o mensagem.o
+OBJS = main.o operacao.o mensagem.o Servidor.o cliente.o
 
 # Nome do executavel que sera gerado
 MAIN = tp0
