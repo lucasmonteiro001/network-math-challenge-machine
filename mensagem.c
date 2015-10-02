@@ -1,10 +1,25 @@
 #include "mensagem.h"
 
+Equacao carregaEquacaoDeMsg(mensagem_de_desafio msg) {
+	operando x;
+	memcpy(&x, msg + 1, TAMANHO_NUMERO);
+
+	operando y;
+	memcpy(&y, msg + 3, TAMANHO_NUMERO);
+
+	operador op;
+	memcpy(&op, msg + 5, TAMANHO_OPERADOR);
+
+	Equacao eq = { x, y, op };
+
+	return eq;
+}
+
 void inicializaDesafioAtravesDeMsg(Desafio *d, operando resultado,
 		mensagem_de_desafio mes) {
 
 	d->resultado = resultado;
-	memcpy(d->msg, mes, 1);
+	memcpy(d->msg, mes, COD_DESAFIO);
 	memcpy(d->msg + 1, mes + 1, 2);
 	memcpy(d->msg + 3, mes + 3, 2);
 	memcpy(d->msg + 5, mes + 5, 1);
@@ -36,14 +51,12 @@ Desafio geraDesafio() {
 
 }
 
-Resposta geraResposta(short int resultado) {
+Resposta geraResposta(operando resultado) {
 	Resposta r = { resultado };
 	return r;
 }
 
 MsgResposta geraMsgDeResposta(Resposta r) {
-
-	printf("Gerando msg de resposta\n");
 
 	MsgResposta m;
 
@@ -104,11 +117,11 @@ Equacao carregaEquacaoDeDesafio(Desafio d) {
 
 }
 
-Resposta carregaRespostaDeMsg(MsgResposta m) {
+Resposta carregaRespostaDeMsg(mensagem_de_resposta m) {
 
 	operando resp;
 
-	memcpy(&resp, m.msg + 1, TAMANHO_NUMERO);
+	memcpy(&resp, m + 1, TAMANHO_NUMERO);
 
 	Resposta r = geraResposta(resp);
 

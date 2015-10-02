@@ -5,6 +5,8 @@
 #include <string.h>
 #include "operacao.h"
 
+#define printLine printf(">>> waiting in line: %d\n", __LINE__);
+
 // o tamanho eh definido em bytes
 #define TAMANHO_MSG_DESAFIO 6
 #define TAMANHO_MSG_RESPOSTA 3
@@ -13,6 +15,8 @@
 
 #define COD_DESAFIO 0x01
 #define COD_RESPOSTA 0x02
+#define COD_OK 0x03
+#define COD_WR 0x04
 
 typedef enum {
 	false = 0, true = !false
@@ -20,6 +24,7 @@ typedef enum {
 
 typedef char mensagem_de_resposta[TAMANHO_MSG_RESPOSTA];
 typedef char mensagem_de_desafio[TAMANHO_MSG_DESAFIO];
+typedef char mensagem_feedback;
 typedef char codigo;
 
 typedef struct Desafio {
@@ -49,7 +54,9 @@ bool confereResposta(Desafio d, Resposta r);
 
 Equacao carregaEquacaoDeDesafio(Desafio d);
 
-Resposta carregaRespostaDeMsg(MsgResposta m);
+Equacao carregaEquacaoDeMsg(mensagem_de_desafio msg);
+
+Resposta carregaRespostaDeMsg(mensagem_de_resposta m);
 
 void imprimeDesafio(Desafio m);
 

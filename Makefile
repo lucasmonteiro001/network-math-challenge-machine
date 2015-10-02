@@ -1,13 +1,15 @@
 ######################################################################
-# Arquivo criado por Bruno Peres e adaptado para a disciplina de 
+# Arquivo criado por Bruno Peres e adaptado para a disciplina de
 # Redes 2015/2 por Lucas Monteiro
 ######################################################################
 
 # Lista dos objetos (arquivos .c, troca-se a extensao para .o) necessarios para o programa final
-OBJS = main.o operacao.o mensagem.o Servidor.o cliente.o
+OBJS_CLIENT = client.o operacao.o mensagem.o
+OBJS_SERVER = server.o operacao.o mensagem.o
 
 # Nome do executavel que sera gerado
-MAIN = tp0
+CLIENT = client
+SERVER = server
 
 # Especifica o compilador
 CC = gcc
@@ -18,21 +20,27 @@ CFLAGS = -Wall -pg -g3
 # Comando terminal para limpar sem confirmacao
 RM = rm -f
 
+all: $(CLIENT) $(SERVER)
 # Compilacao do programa e passos das ligacoeses de dependencias
-$(MAIN): $(OBJS)
+$(CLIENT): $(OBJS_CLIENT)
 	@echo ""
 	@echo " --- COMPILANDO PROGRAMA ---"
-	@$(CC) $(CFLAGS) $(OBJS) -lm -o $(MAIN)
+	@$(CC) $(CFLAGS) $(OBJS_CLIENT) -lm -o $(CLIENT)
 	@echo ""
 
 %.o: %.c %.h
 	@echo ""
 	@echo " --- COMPILANDO OBJETO \"$@\""
-	@$(CC) $(CFLAGS) $< -c 
+	@$(CC) $(CFLAGS) $< -c
 
-clean:
-	$(RM) $(MAIN) *.o
-	$(RM) gmon.out
-	
-run:
-	./$(MAIN) 
+# Compilacao do programa e passos das ligacoeses de dependencias
+$(SERVER): $(OBJS_SERVER)
+	@echo ""
+	@echo " --- COMPILANDO PROGRAMA ---"
+	@$(CC) $(CFLAGS) $(OBJS_SERVER) -lm -o $(SERVER)
+	@echo ""
+
+%.o: %.c %.h
+	@echo ""
+	@echo " --- COMPILANDO OBJETO \"$@\""
+	@$(CC) $(CFLAGS) $< -c
