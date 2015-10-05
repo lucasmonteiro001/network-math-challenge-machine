@@ -98,6 +98,7 @@ int main(int argc, char *argv[]) {
 				// Envia a msg de acerto ao cliente
 				feedback = COD_OK;
 				n = write(newsockfd, &feedback, sizeof(feedback));
+				close(newsockfd);
 
 			} else {
 				// Envia a msg de erro ao cliente
