@@ -8,8 +8,8 @@ OBJS_CLIENT = client.o operacao.o mensagem.o
 OBJS_SERVER = server.o operacao.o mensagem.o
 
 # Nome do executavel que sera gerado
-CLIENT = client
-SERVER = server
+CLIENT = cliente
+SERVER = servidor
 
 # Especifica o compilador
 CC = gcc
