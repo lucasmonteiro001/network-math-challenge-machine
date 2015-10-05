@@ -11,14 +11,19 @@
 
 int main(int argc, char *argv[]) {
 
-	int sockfd, newsockfd, portno;
+	if (argc != 2) {
+		perror("Parametros invalidos\n");
+		printf("Correto: ./server <port_number>\n");
+		return EXIT_FAILURE;
+	}
+
+	int sockfd, newsockfd;
 	socklen_t clilen;
 
 	struct sockaddr_in serv_addr, cli_addr;
 
 	int n;
 
-	/* First call to socket() function */
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
 	if (sockfd < 0) {
@@ -26,21 +31,18 @@ int main(int argc, char *argv[]) {
 		exit(1);
 	}
 
-	/* Initialize socket structure */
 	bzero((char *) &serv_addr, sizeof(serv_addr));
 
-	portno = PORT_NUMBER;
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_addr.s_addr = INADDR_ANY;
-	serv_addr.sin_port = htons(portno);
+	serv_addr.sin_port = htons(atoi(argv[1]));
 
-	/* Now bind the host address using bind() call.*/
 	if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
 		perror("ERROR on binding");
 		exit(1);
 	}
 
-	listen(sockfd, 5);
+	listen(sockfd, 1);
 	clilen = sizeof(cli_addr);
 
 	mensagem_de_resposta client_answer;
@@ -62,13 +64,12 @@ int main(int argc, char *argv[]) {
 		// Enviar desafios ao cliente ate ele acertar
 		while (isCorrect != true) {
 
-			printf("\nSOCKET ID: %d\n", newsockfd);
-
 			Desafio d = geraDesafio();
-			imprimeDesafio(d);
+			//imprimeDesafio(d);
 
 			// Envia a msg para o cliente
 			n = write(newsockfd, d.msg, sizeof(d.msg));
+			//printf("tamanho de msg de desafio: %lu\n", sizeof(d.msg));
 
 			if (n < 0) {
 				perror("ERROR writing to socket");
@@ -79,6 +80,7 @@ int main(int argc, char *argv[]) {
 
 			// Recebe a resposta do cliente
 			n = read(newsockfd, client_answer, sizeof(client_answer));
+			//printf("tamanho de msg de resposta: %lu\n", sizeof(client_answer));
 
 			if (n < 0) {
 				perror("ERROR reading from socket");
@@ -91,13 +93,15 @@ int main(int argc, char *argv[]) {
 
 			if (confereResposta(d, r) == true) {
 
-				printf("Sucesso! Autenticacao liberada.\n");
+				//printf("Sucesso! Autenticacao liberada.\n\n");
 
 				isCorrect = true;
 
 				// Envia a msg de acerto ao cliente
 				feedback = COD_OK;
+
 				n = write(newsockfd, &feedback, sizeof(feedback));
+				//printf("tamanho de msg de feedback: %lu\n", sizeof(feedback));
 				close(newsockfd);
 
 			} else {
@@ -107,6 +111,7 @@ int main(int argc, char *argv[]) {
 				isCorrect = false;
 
 				n = write(newsockfd, &feedback, sizeof(feedback));
+				//printf("tamanho de msg de feedback: %lu\n", sizeof(feedback));
 
 			}
 

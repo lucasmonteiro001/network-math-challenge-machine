@@ -69,25 +69,10 @@ int main(int argc, char *argv[]) {
 		imprimeDesafio(d);
 
 		Resposta r = geraResposta(res);
+
+		scanf("%hd", &r.resposta);
+
 		MsgResposta m = geraMsgDeResposta(r);
-
-		int val = 0;
-
-		printf("Deseja enviar a resposta correta? \nSIM (1) . NAO (0)\n");
-
-		scanf("%d", &val);
-
-		if (val == 1) {
-
-			printf("Enviando resposta CORRETA: %d\n", r.resposta);
-
-		} else {
-
-			printf("Enviando resposta ERRADA: %d\n", r.resposta + 1);
-			// altera o valor da resposta para ser diferente do valor certo
-			r.resposta += 1;
-			m = geraMsgDeResposta(r);
-		}
 
 		// Envia a resposta para o server
 		n = write(sockfd, m.msg, sizeof(m.msg));
