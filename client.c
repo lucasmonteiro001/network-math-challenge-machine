@@ -15,12 +15,12 @@ int main(int argc, char *argv[]) {
 	mensagem_de_desafio server_answer;
 
 	if (argc < 3) {
-		fprintf(stderr, "usage %s hostname port\n", argv[0]);
-		exit(0);
+		perror("Parametros invalidos\n");
+		printf("Correto: ./client <host> <port_number>\n");
+		exit(EXIT_FAILURE);
 	}
 	portno = atoi(argv[2]);
 
-	/* Create a socket point */
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
 	if (sockfd < 0) {
@@ -40,7 +40,6 @@ int main(int argc, char *argv[]) {
 			server->h_length);
 	serv_addr.sin_port = htons(portno);
 
-	/* Now connect to the server */
 	if (connect(sockfd, (struct sockaddr*) &serv_addr, sizeof(serv_addr)) < 0) {
 		perror("ERROR connecting");
 		exit(1);
